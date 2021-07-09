@@ -1,0 +1,105 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.f-proj.aoc</groupId>
+  <artifactId>amazon-order-crawler</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <build>
+      <sourceDirectory>src/main/scala</sourceDirectory>
+      <testSourceDirectory>src/test/scala</testSourceDirectory>
+      <plugins>
+          <plugin>
+              <groupId>net.alchim31.maven</groupId>
+              <artifactId>scala-maven-plugin</artifactId>
+              <version>4.4.1</version>
+              <configuration>
+                <scalaCompatVersion>2.13.5</scalaCompatVersion>
+              </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+          </plugin>
+
+      </plugins>
+  </build>
+
+  <dependencies>
+
+<!--    <dependency>-->
+<!--      <groupId>org.scala-lang</groupId>-->
+<!--      <artifactId>scala-library</artifactId>-->
+<!--      <version>2.13.5</version>-->
+<!--    </dependency>-->
+
+<!--    <dependency>-->
+<!--      <groupId>org.scala-lang</groupId>-->
+<!--      <artifactId>scala-reflect</artifactId>-->
+<!--      <version>2.13.5</version>-->
+<!--    </dependency>-->
+    <!-- https://mvnrepository.com/artifact/dev.zio/zio -->
+    <dependency>
+      <groupId>dev.zio</groupId>
+      <artifactId>zio_2.13</artifactId>
+      <version>1.0.4-2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>dev.zio</groupId>
+      <artifactId>zio-config_2.13</artifactId>
+      <version>1.0.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>dev.zio</groupId>
+      <artifactId>zio-config-magnolia_2.13</artifactId>
+      <version>1.0.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>dev.zio</groupId>
+      <artifactId>zio-config-typesafe_2.13</artifactId>
+      <version>1.0.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>dev.zio</groupId>
+      <artifactId>zio-config-yaml_2.13</artifactId>
+      <version>1.0.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.polynote</groupId>
+      <artifactId>uzhttp_2.13</artifactId>
+      <version>0.2.6</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.microsoft.playwright</groupId>
+      <artifactId>playwright</artifactId>
+      <version>0.181.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.scopt</groupId>
+      <artifactId>scopt_2.13</artifactId>
+      <version>4.0.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+</project>
