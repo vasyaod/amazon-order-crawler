@@ -210,6 +210,6 @@ object AmazonCrawlerM {
     }
   }
 
-  def refresh(): ZIO[AmazonServiceT, Throwable, ()] =
+  def refresh(): ZIO[AmazonServiceT, Throwable, Unit] =
     ZIO.accessM(x => x.get.refresh())
 }
