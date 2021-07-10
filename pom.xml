@@ -7,8 +7,8 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+     <maven.compiler.source>1.8</maven.compiler.source>
+     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
   <build>
@@ -22,6 +22,18 @@
               <configuration>
                 <scalaCompatVersion>2.13.5</scalaCompatVersion>
               </configuration>
+              <executions>
+                 <execution>
+                   <id>scala-compile-first</id>
+                   <phase>process-resources</phase>
+                   <goals>
+                     <goal>add-source</goal>
+                     <goal>compile</goal>
+                     <goal>testCompile</goal>
+                   </goals>
+                 </execution>
+              </executions>
+
           </plugin>
 
           <plugin>

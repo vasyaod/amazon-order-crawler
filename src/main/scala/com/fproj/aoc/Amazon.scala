@@ -176,9 +176,9 @@ object Amazon {
         page.click("#signInSubmit")
       }
       _ <- ZIO.sleep(Duration.fromMillis(2000))
-      _ <- IO.effect {
-        page.screenshot(new Page.ScreenshotOptions().withPath(Paths.get("example.png")))
-      }
+//      _ <- IO.effect {
+//        page.screenshot(new Page.ScreenshotOptions().withPath(Paths.get("example.png")))
+//      }
     } yield ()
 
   def refresh() = {
