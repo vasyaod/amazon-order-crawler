@@ -37,11 +37,12 @@ object BrowserContextM {
 
   type BrowserContextT = Has[BrowserContext]
 
-  val impl: ZLayer[PlaywrightT, Throwable, BrowserContextT] = ZLayer.fromAcquireRelease {
+  val impl: ZLayer[PlaywrightT with Params.ArgsT, Throwable, BrowserContextT] = ZLayer.fromAcquireRelease {
     for {
       playwright <- playwright
+      args <- ZIO.access[Has[Params.Args]](x => x.get)
       context <- UIO.effectTotal {
-        val browser = playwright.chromium.launch(new BrowserType.LaunchOptions().withHeadless(false))
+        val browser = playwright.chromium.launch(new BrowserType.LaunchOptions().withHeadless(args.headless))
         browser.newContext(new Browser.NewContextOptions()
           .withViewport(1920, 1200)
         )
@@ -166,7 +167,7 @@ object Amazon {
       _ <- ZIO.sleep { Duration.fromMillis(500) }
       _ <- IO.effect { page.navigate(s"${url}") }
       _ <- ZIO.sleep { Duration.fromMillis(500) }
-      config <- ZIO.access[Has[Config.Credential]](x => x.get)
+//      config <- ZIO.access[Has[Config.Credential]](x => x.get)
       args <- ZIO.access[Has[Params.Args]](x => x.get)
       _ <- IO.effect {
         page.click("#nav-orders")

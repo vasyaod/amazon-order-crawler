@@ -5,7 +5,7 @@ import scopt.OParser
 
 object Params {
 
-  case class Args(login: String = "", password: String = "")
+  case class Args(login: String = "", password: String = "", headless: Boolean = false)
 
   type ArgsT = Has[Args]
 
@@ -25,6 +25,9 @@ object Params {
             .action((x, c) => c.copy(password = x))
             .text("password for amazon site")
             .required(),
+          opt[Unit]('h', "headless")
+            .action((x, c) => c.copy(headless = true))
+            .text("headless mode")
         )
       }
 

@@ -9,7 +9,6 @@ import com.fproj.aoc.storage._
 
 object Main extends App {
 
-  val pageDep = PlaywrightM.impl >>> BrowserContextM.impl >>> PageM.impl
 //  val storageDep: ZLayer[Any, Throwable, Storage] = Storage.impl
   val configDep = Config.load("config.cfg")
  // val amazonCrawlerDep = (ZLayer.identity[ZEnv] configDep ++ pageDep ++ Storage.impl ++ ZLayer.identity[ZEnv]) >+> AmazonCrawlerM.impl
@@ -25,6 +24,8 @@ object Main extends App {
     } yield ()
 
   override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] = {
+    val argsDep = Params.impl(args)
+    val pageDep = argsDep >+> PlaywrightM.impl >+> BrowserContextM.impl >>> PageM.impl
     app
       .provideLayer(ZLayer.identity[ZEnv] >+> Params.impl(args) >+> configDep >+> pageDep >+> Storage.impl >+> AmazonCrawlerM.impl)
       .exitCode
