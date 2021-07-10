@@ -15,7 +15,7 @@ object Params {
       val parser1 = {
         import builder._
         OParser.sequence(
-          programName("amazon-report"),
+          programName("amazon-order-crawler"),
           // option -f, --foo
           opt[String]('l', "login")
             .action((x, c) => c.copy(login = x))

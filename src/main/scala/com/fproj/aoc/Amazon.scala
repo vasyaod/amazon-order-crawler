@@ -42,7 +42,7 @@ object BrowserContextM {
       playwright <- playwright
       args <- ZIO.access[Has[Params.Args]](x => x.get)
       context <- UIO.effectTotal {
-        val browser = playwright.chromium.launch(new BrowserType.LaunchOptions().withHeadless(args.headless))
+        val browser = playwright.firefox().launch(new BrowserType.LaunchOptions().withHeadless(args.headless))
         browser.newContext(new Browser.NewContextOptions()
           .withViewport(1920, 1200)
         )
@@ -115,6 +115,7 @@ object Amazon {
   def downloadOrderIds(url: String, filter: String, index: Int): ZIO[Clock with PageT with Blocking, Throwable, List[String]] =
     for {
       page <- page
+      _ <- effectBlocking { println(s"Parsing for year: ${filter}, index: ${index}") }
       _ <- effectBlocking { page.navigate(s"${url}/gp/your-account/order-history?orderFilter=year-${filter}&startIndex=${index}") }
       _ <- effectBlocking { page.waitForLoadState(LoadState.LOAD, new WaitForLoadStateOptions().withTimeout(5.0)) }
       _ <- ZIO.sleep { Duration.fromMillis(200) }
@@ -145,9 +146,10 @@ object Amazon {
   def downloadOrder(url: String, orderId: String) =
     for {
       page <- page
+      _ <- effectBlocking { println(s"Parsing order ${orderId}") }
       _ <- effectBlocking { page.navigate(s"${url}/gp/your-account/order-details?orderID=${orderId}") }
-      _ <- effectBlocking { page.waitForLoadState(LoadState.DOMCONTENTLOADED) }.catchAll(x => IO.succeed(println("Error", x)))
-      _ <- ZIO.sleep { Duration.fromMillis(100) }
+      _ <- effectBlocking { page.waitForLoadState(LoadState.LOAD, new WaitForLoadStateOptions().withTimeout(5.0)) }
+      _ <- ZIO.sleep { Duration.fromMillis(200) }
       //      _ <- IO.effect { page.screenshot(new Page.ScreenshotOptions().withPath(Paths.get("example1.png"))) }
       //      _ <- IO.effect { println("-----------------------------------"); println(page.content()); println("======================================="); }
       //      _ <- IO.effect { new PrintWriter(s"filename-${orderId}") { write(page.innerText("body")); close } }
@@ -174,12 +176,13 @@ object Amazon {
         page.fill("#ap_email", args.login)
         page.click("#continue")
         page.fill("#ap_password", args.password)
+        page.screenshot(new Page.ScreenshotOptions().withPath(Paths.get("example1.png")))
         page.click("#signInSubmit")
       }
       _ <- ZIO.sleep(Duration.fromMillis(2000))
-//      _ <- IO.effect {
-//        page.screenshot(new Page.ScreenshotOptions().withPath(Paths.get("example.png")))
-//      }
+      _ <- IO.effect {
+        page.screenshot(new Page.ScreenshotOptions().withPath(Paths.get("example2.png")))
+      }
     } yield ()
 
   def refresh() = {
