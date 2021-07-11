@@ -134,9 +134,9 @@ object Amazon {
       }
     } yield allIds
 
-  def downloadOrderAllIds(url: String, yearFilter: List[String]): ZIO[Clock with PageT with Blocking, Throwable, List[String]] =
+  def downloadOrderAllIds(url: String, yearFilter: Seq[String]): ZIO[Clock with PageT with Blocking, Throwable, List[String]] =
     for {
-      filters <- ZIO.succeed(yearFilter)
+      filters <- ZIO.succeed(yearFilter.toList)
       setOfIds <- ZIO.foreach(filters) { filter =>
         downloadOrderAllIdsForFilter(url, filter, 1, List())
       }
@@ -187,10 +187,10 @@ object Amazon {
 
   def refresh() = {
     for {
-      config <- ZIO.access[Has[Config.Credential]](x => x.get)
-      _ <- authorize(config.amazonUrl)
-      ids <- downloadOrderAllIds(config.amazonUrl, config.years)
-      orders <- downloadAllOrders(config.amazonUrl, ids)
+      args <- ZIO.access[Has[Params.Args]](x => x.get)
+      _ <- authorize(args.amazonUrl)
+      ids <- downloadOrderAllIds(args.amazonUrl, args.years)
+      orders <- downloadAllOrders(args.amazonUrl, ids)
       stateRef <- stg()
       _ <- stateRef.set(orders)
 //      _ <- putStr(s"${ids.mkString("\n")}, size ${ids.size}, ${orders}")
@@ -206,7 +206,7 @@ object AmazonCrawlerM {
     def refresh(): ZIO[Any, Throwable, Unit]
   }
 
-  val impl: ZLayer[Console with Blocking with Clock with Storage with PageT with Config.CredentialT with Params.ArgsT, Throwable, AmazonServiceT] = ZLayer.fromFunction {
+  val impl: ZLayer[Console with Blocking with Clock with Storage with PageT with Params.ArgsT, Throwable, AmazonServiceT] = ZLayer.fromFunction {
     x => new AmazonService {
       override def refresh(): ZIO[Any, Throwable, Unit] = {
         Amazon.refresh().provide(x)

@@ -5,7 +5,11 @@ import scopt.OParser
 
 object Params {
 
-  case class Args(login: String = "", password: String = "", headless: Boolean = false)
+  case class Args(login: String = "",
+                  password: String = "",
+                  headless: Boolean = false,
+                  amazonUrl: String = "http://amazon.com/",
+                  years: Seq[String] = Seq("2021"))
 
   type ArgsT = Has[Args]
 
@@ -27,7 +31,15 @@ object Params {
             .required(),
           opt[Unit]('h', "headless")
             .action((x, c) => c.copy(headless = true))
-            .text("headless mode")
+            .text("headless mode"),
+          opt[String]("url")
+            .action((x, c) => c.copy(amazonUrl = x))
+            .text("Amazon url, default http://amazon.com/. It could depend on a country")
+            .required(),
+          opt[Seq[String]]("years")
+            .valueName("<year1>,<year2>...")
+            .action((x, c) => c.copy(years = x))
+            .text("Kind of filter for what years orders should be downloaded"),
         )
       }
 
