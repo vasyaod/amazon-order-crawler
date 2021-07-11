@@ -35,7 +35,6 @@ object Params {
           opt[String]("url")
             .action((x, c) => c.copy(amazonUrl = x))
             .text("Amazon url, default http://amazon.com/. It could depend on a country")
-            .required(),
           opt[Seq[String]]("years")
             .valueName("<year1>,<year2>...")
             .action((x, c) => c.copy(years = x))
