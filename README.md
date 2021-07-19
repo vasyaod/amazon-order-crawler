@@ -18,3 +18,13 @@ Usage: amazon-order-crawler [options]
   --years <year1>,<year2>...
                            Kind of filter for what years orders should be downloaded
 ```
+
+# Jenkins
+
+Useful environment settings for keeping data between sessions
+ 
+```
+PLAYWRIGHT_BROWSERS_PATH = '/home/jenkins/workspace/amazon-order-report/pw-browsers'
+```
+
+Also jenkins file is provided ./jenkins-file

@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+
+    environment {
+        PLAYWRIGHT_BROWSERS_PATH = '/home/jenkins/workspace/amazon-order-crawler/pw-browsers'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                git branch: 'main',
+                    credentialsId: 'pi',
+                    url: 'git@github.com:vasyaod/amazon-order-report.git'
+
+                withCredentials([usernamePassword(credentialsId: 'amazon', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                   sh 'mvn compile exec:java -Dexec.mainClass="com.fproj.aoc.Main" -Dexec.args="--headless -l $USERNAME -p $PASSWORD"'
+                }
+            }
+        }
+    }
+}
