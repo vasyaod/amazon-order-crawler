@@ -9,7 +9,7 @@ object Params {
                   password: String = "",
                   headless: Boolean = false,
                   amazonUrl: String = "http://amazon.com/",
-                  years: Seq[String] = Seq("2021"))
+                  years: Seq[String] = Seq("2022"))
 
   type ArgsT = Has[Args]
 
